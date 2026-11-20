@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens. Placeholder values: replace them with the Figma variables.
+ * Each token is a CSS variable on :root, overridden under .dark, and exposed
+ * to Tailwind in @theme inline below (e.g. --color-primary → bg-primary).
+ */
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+  --color-page: #f7f7fa;
+  --color-card: #ffffff;
+  --color-card-foreground: #171717;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #5f5f68;
+  --color-border: #e4e4e7;
+  --color-heading-foreground: #0f1729;
+  --color-primary: #4a13e7;
+  --color-primary-foreground: #ffffff;
+  --color-danger: #dc2626;
+  --color-danger-foreground: #ffffff;
+}
+
+.dark {
+  --color-background: #0b0f19;
+  --color-foreground: #e5e7eb;
+  --color-page: #0f1420;
+  --color-card: #161c2a;
+  --color-card-foreground: #e5e7eb;
+  --color-muted: #1f2636;
+  --color-muted-foreground: #9ca3af;
+  --color-border: #283143;
+  --color-heading-foreground: #f8fafc;
+  --color-primary: #7c5cf5;
+  --color-primary-foreground: #ffffff;
+  --color-danger: #f87171;
+  --color-danger-foreground: #0b0f19;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  /* Shared input/button radius; `cn` knows it (lib/cn.ts). */
+  --radius-field: 0.5rem;
+  --shadow-card: 0 8px 24px -8px rgb(0 0 0 / 0.05);
+
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-page: var(--color-page);
+  --color-card: var(--color-card);
+  --color-card-foreground: var(--color-card-foreground);
+  --color-muted: var(--color-muted);
+  --color-muted-foreground: var(--color-muted-foreground);
+  --color-border: var(--color-border);
+  --color-heading-foreground: var(--color-heading-foreground);
+  --color-primary: var(--color-primary);
+  --color-primary-foreground: var(--color-primary-foreground);
+  --color-danger: var(--color-danger);
+  --color-danger-foreground: var(--color-danger-foreground);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Read-only forms keep their look, but no control reacts to the pointer. */
+fieldset:disabled :is(button, input, textarea, select, label) {
+  pointer-events: none;
+}
