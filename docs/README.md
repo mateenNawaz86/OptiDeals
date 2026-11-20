@@ -5,8 +5,9 @@ sends and expects, so the backend can be built against it without guessing.
 
 ## Modules
 
-| Module | Spec | Frontend today |
-| ------ | ---- | -------------- |
+| Module  | Spec                      | Frontend today                             |
+| ------- | ------------------------- | ------------------------------------------ |
+| Contact | `contact-backend-spec.md` | API client + mock (`features/contact/api`) |
 
 ## Conventions
 

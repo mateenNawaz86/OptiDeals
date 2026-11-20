@@ -1,0 +1,25 @@
+export const contact = {
+  metaTitle: "Contact us",
+  metaDescription:
+    "Contact the OptiDeals team about subscriptions, trials, reseller panels or setup help.",
+  title: "Contact us",
+  tagline: "Contact our team and get some of the best customer support around.",
+  topics: ["New subscriptions and trials", "Reseller panels", "Setup and app help"],
+  formTitle: "Contact info",
+  fields: {
+    firstName: { label: "First name", placeholder: "Enter your first name" },
+    lastName: { label: "Last name", placeholder: "Enter your last name" },
+    email: { label: "Email", placeholder: "you@example.com" },
+    phone: { label: "Phone number", placeholder: "Enter your number" },
+    dateOfBirth: { label: "Date of birth", placeholder: "Enter your date of birth" },
+    service: { label: "Requested service", placeholder: "Choose a service" },
+    message: { label: "How can we help you?", placeholder: "Describe what you need" },
+    agree: { label: "I agree to the", link: "terms and privacy policy" },
+  },
+  planMessage: (period: string) => `I'd like to buy the ${period} plan.`,
+  cancel: "Cancel",
+  submit: "Submit",
+  sending: "Sending…",
+  success: "Thank you! Your message has been sent. Our team will contact you soon.",
+  failure: "Your message could not be sent. Please try again.",
+};

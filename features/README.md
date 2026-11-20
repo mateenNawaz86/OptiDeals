@@ -17,14 +17,15 @@ features/<name>/
     atoms/ molecules/ organisms/ templates/
 ```
 
-- Route files in `app/[locale]/(app)/<name>/page.tsx` stay thin and render a template from
+- Route files in `app/[locale]/(public)/<name>/page.tsx` stay thin and render a template from
   `features/<name>/ui/templates`.
 - Code shared by several features goes in `features/shared/`; generic design-system primitives
   go in `components/ui/`.
 - Strings go in `dictionaries/{de,en}.json` under `modules.<name>.*` and are read with
   `useTranslations()`.
 
-`features/dashboard` is the minimal example slice.
+Slices today: `home` (static data + region context), `about` (template only) and `contact`
+(full slice: schema, mock/live API, mutation hook, form).
 
 ## `api/index.ts` template
 

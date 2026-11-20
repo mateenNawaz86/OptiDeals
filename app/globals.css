@@ -1,69 +1,106 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+/*
+ * Roca is a commercial typeface (not on Google Fonts). Put the licensed web font at
+ * public/fonts/roca/roca-bold.woff2 (and .woff); until then the hero heading falls back to Inter.
+ */
+@font-face {
+  font-family: "Roca";
+  src:
+    local("Roca Two Bold"),
+    local("Roca Bold"),
+    url("/fonts/roca/roca-bold.woff2") format("woff2"),
+    url("/fonts/roca/roca-bold.woff") format("woff");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 /*
- * Design tokens. Placeholder values: replace them with the Figma variables.
- * Each token is a CSS variable on :root, overridden under .dark, and exposed
- * to Tailwind in @theme inline below (e.g. --color-primary → bg-primary).
+ * Design tokens. Brand hues come from the IPTV Figma design; the 600/700 steps are deeper
+ * versions chosen so white text on them meets WCAG contrast (the design's #17dbc7 is 1.75:1).
  */
-:root {
-  --color-background: #ffffff;
-  --color-foreground: #171717;
-  --color-page: #f7f7fa;
-  --color-card: #ffffff;
-  --color-card-foreground: #171717;
-  --color-muted: #f4f4f5;
-  --color-muted-foreground: #5f5f68;
-  --color-border: #e4e4e7;
-  --color-heading-foreground: #0f1729;
-  --color-primary: #4a13e7;
-  --color-primary-foreground: #ffffff;
-  --color-danger: #dc2626;
-  --color-danger-foreground: #ffffff;
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-roca: "Roca", var(--font-inter), ui-sans-serif, sans-serif;
+
+  --color-brand-50: #e9fbf8;
+  --color-brand-100: #c9f5ef;
+  --color-brand-400: #17dbc7;
+  --color-brand-600: #0d9e90; /* 3.3:1 on white — large text and UI parts */
+  --color-brand-700: #087a70; /* 5.2:1 on white — any text */
+  --color-accent-100: #ece8ff;
+  --color-accent-500: #8671ff;
+  --color-accent-600: #6a4ff0; /* 5.3:1 on white */
+  --color-indigo: #504499;
+
+  --color-ink: #1b1a1a;
+  --color-body: #4d4d4d;
+  --color-muted: #5c5c5c;
+  --color-placeholder: #8a8888;
+  --color-surface: #f6f6f6;
+  --color-line: #e6e6e6;
+
+  --radius-field: 9px;
+
+  /* Figma drop shadows: y 4, blur ~15–17, black 10%. */
+  --shadow-card: 0 4px 15px rgb(0 0 0 / 0.08);
+  --shadow-card-hover: 0 14px 32px -8px rgb(23 30 60 / 0.18);
+  --shadow-panel: 0 4px 17px rgb(0 0 0 / 0.1);
 }
 
-.dark {
-  --color-background: #0b0f19;
-  --color-foreground: #e5e7eb;
-  --color-page: #0f1420;
-  --color-card: #161c2a;
-  --color-card-foreground: #e5e7eb;
-  --color-muted: #1f2636;
-  --color-muted-foreground: #9ca3af;
-  --color-border: #283143;
-  --color-heading-foreground: #f8fafc;
-  --color-primary: #7c5cf5;
-  --color-primary-foreground: #ffffff;
-  --color-danger: #f87171;
-  --color-danger-foreground: #0b0f19;
+/* Header, feature band, contact band, footer. */
+@utility bg-brand {
+  background-image: linear-gradient(90deg, #087a70 0%, #0d9e90 30%, #504499 100%);
 }
 
-@theme inline {
-  --font-sans: var(--font-inter);
-  /* Shared input/button radius; `cn` knows it (lib/cn.ts). */
-  --radius-field: 0.5rem;
-  --shadow-card: 0 8px 24px -8px rgb(0 0 0 / 0.05);
-
-  --color-background: var(--color-background);
-  --color-foreground: var(--color-foreground);
-  --color-page: var(--color-page);
-  --color-card: var(--color-card);
-  --color-card-foreground: var(--color-card-foreground);
-  --color-muted: var(--color-muted);
-  --color-muted-foreground: var(--color-muted-foreground);
-  --color-border: var(--color-border);
-  --color-heading-foreground: var(--color-heading-foreground);
-  --color-primary: var(--color-primary);
-  --color-primary-foreground: var(--color-primary-foreground);
-  --color-danger: var(--color-danger);
-  --color-danger-foreground: var(--color-danger-foreground);
+/* Buttons, pills, price headers: white text stays legible across the whole gradient. */
+@utility bg-brand-vivid {
+  background-image: linear-gradient(90deg, #0b8b80 0%, #6a4ff0 100%);
 }
 
-body {
-  background: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+@utility text-gradient-brand {
+  background-image: linear-gradient(90deg, #0d9e90 25%, #504499 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Anchor targets land below the sticky header. */
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-brand-100);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent-600);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
 /* Read-only forms keep their look, but no control reacts to the pointer. */

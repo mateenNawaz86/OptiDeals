@@ -12,7 +12,7 @@ TanStack Query. Same stack and structure as `buero-365-frontend-v3`.
 - React Hook Form + `@hookform/resolvers`
 - TanStack Query for server state
 - Axios-based typed API client (`lib/api.ts`) with a mock/live switch per feature
-- i18n: `de` (default) and `en`, routed under `app/[locale]`
+- i18n: `en` (default) and `de`, routed under `app/[locale]` (the `de` dictionary still holds the English copy)
 - Vitest + React Testing Library (unit/component), Playwright (E2E)
 - ESLint (type-checked) + Prettier, Husky + lint-staged pre-commit hook
 
@@ -24,7 +24,28 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open http://localhost:3000. It redirects to `/de/dashboard`.
+Open http://localhost:3000. It redirects to `/en` (English is the default locale).
+
+## Pages
+
+Built from the "IPTV" Figma design (desktop frames, 1440px wide):
+
+| Route               | Design frame          | Slice              |
+| ------------------- | --------------------- | ------------------ |
+| `/[locale]`         | Desktop 1, 3, 4, 5, 6 | `features/home`    |
+| `/[locale]/about`   | Desktop 7             | `features/about`   |
+| `/[locale]/contact` | Contact Us            | `features/contact` |
+
+Desktop 3–6 are the home page with another region tab selected; the tabs switch the pricing
+currency (`features/home/data/regions.ts`). Content is capped at 1440px; gradient bands run
+full width. Smaller screens stack the same sections.
+
+## Fonts
+
+- **Inter** (Google, via `next/font`) for everything.
+- **Roca** for the main hero heading (`font-roca`). Roca is a commercial font: add the licensed
+  web font as `public/fonts/roca/roca-bold.woff2` (and `.woff`). Until then the heading falls
+  back to Inter (and the browser logs a 404 for the missing file).
 
 ## Environment variables
 
@@ -53,22 +74,22 @@ Open http://localhost:3000. It redirects to `/de/dashboard`.
 
 ```
 app/
-  [locale]/layout.tsx   Root layout (<html lang>), providers, theme init script
-  [locale]/(app)/       Signed-in area; its layout will hold the app shell
-  [locale]/(public)/    Routes outside the shell (share links, auth)
-  providers.tsx         React Query, locale, translations
-  globals.css           Design tokens (light + .dark) mapped to Tailwind
-components/ui/          Design-system primitives: atoms/, molecules/, organisms/
-components/shell/       App shell: sidebar, top bar
-components/assets/svgs/ SVG icon components
-contexts/               Global (locale) and translation contexts
-dictionaries/           de.json / en.json
-features/<name>/        Feature slices: api/, data/, hooks/, lib/, types/, ui/ (see features/README.md)
-hooks/                  Shared hooks (useTheme, useLocaleRouter, useDebouncedValue, useIsMounted)
-lib/                    API client, config, query helpers, form-error mapping, cn, i18n, nav
-proxy.ts                Redirects unprefixed URLs to /<locale>/…
-tests/                  Vitest setup + Playwright E2E specs
-docs/                   Backend specs, one per module
+  [locale]/layout.tsx       Root layout (<html lang>), Inter font, providers
+  [locale]/(public)/        Site routes: home, about, contact (+ shared header layout)
+  providers.tsx             React Query, locale, translations
+  globals.css               Design tokens, gradients, Roca @font-face
+components/ui/atoms/        Gradient pill/button, form field, checkbox
+components/shell/           Site header and footer
+components/assets/svgs/     Icons extracted from the design, as React components
+contexts/                   Global (locale) and translation contexts
+dictionaries/               en.json / de.json (all page copy)
+features/<name>/            Feature slices (see features/README.md)
+hooks/                      Shared hooks (useLocaleRouter, useDebouncedValue, useIsMounted)
+lib/                        API client, config, query helpers, form errors, cn, i18n, nav links
+public/images/              Images extracted from the design exports
+proxy.ts                    Redirects unprefixed URLs to /<locale>/…
+tests/                      Vitest setup + Playwright E2E specs
+docs/                       Backend specs, one per module
 ```
 
 ## Conventions
@@ -80,8 +101,9 @@ docs/                   Backend specs, one per module
   normalizes errors into `ApiError`.
 - Class names: `cn()` (`lib/cn.ts`) or `combineClasses()` (`utils/utils.ts`, supports `!!class`
   to drop a default).
-- Dark mode is class-based (`.dark` on `<html>`), persisted to `localStorage` via
-  `hooks/useTheme.ts`.
+- Light theme only, as in the design.
+- Server components translate with `getTranslations(locale)` (`lib/dictionary/server.ts`);
+  client components use `useTranslations()`.
 - Unit tests sit next to the code as `*.test.ts(x)` and are committed.
 
 ## CI
