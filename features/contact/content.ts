@@ -11,13 +11,14 @@ import { messages, whatsappHref } from "@/lib/site";
 export const contact = {
   metaTitle: "Contact Us on WhatsApp: 24/7 IPTV Support",
   metaDescription:
-    "Message the OptiDeals team on WhatsApp 24/7 for IPTV subscriptions, trials, reseller panels or setup help. A real person replies.",
+    "Message the OptiDeals team on WhatsApp 24/7, or email us, for IPTV subscriptions, trials, reseller panels or setup help. A real person replies.",
   eyebrow: "Contact us",
   title: { lead: "Talk to us on", accent: "WhatsApp" },
   intro:
-    "No forms and no waiting on email. Message our team for subscriptions, trials or setup help and a real person replies, 24/7.",
+    "No forms to fill in. Message our team on WhatsApp for the fastest reply on subscriptions, trials or setup help, 24/7, or send us an email.",
   cta: { label: "Chat on WhatsApp", href: whatsappHref(messages.general) },
   numberLabel: "WhatsApp number",
+  emailLabel: "Email",
   topicsEyebrow: "Pick a topic",
   topicsTitle: "What can we help you with?",
   topicsIntro:

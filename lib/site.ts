@@ -19,6 +19,12 @@ export const whatsapp = {
   display: "+44 7956 038661",
 } as const;
 
+/** Email contact, for visitors who prefer it to WhatsApp. */
+export const email = {
+  address: "mateenmirani125@gmail.com",
+  href: "mailto:mateenmirani125@gmail.com",
+} as const;
+
 /** The company's YouTube channel: setup guides and product videos. */
 export const youtube = {
   url: "https://www.youtube.com/@OptiverseSolutionsltd",

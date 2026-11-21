@@ -4,7 +4,7 @@ import { ArrowRightIcon, WhatsAppIcon } from "@/components/ui/icons";
 import { PageHero } from "@/components/ui/page-hero";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { whatsapp } from "@/lib/site";
+import { email, whatsapp } from "@/lib/site";
 import { contact } from "../content";
 
 /** Contact is WhatsApp only: one big chat button, then topic shortcuts with pre-written messages. */
@@ -40,6 +40,15 @@ export function ContactPage() {
             className="font-bold text-white underline decoration-white/30 underline-offset-4 hover:decoration-white"
           >
             {whatsapp.display}
+          </a>
+        </p>
+        <p className="mt-2 text-sm text-white/60">
+          {contact.emailLabel}:{" "}
+          <a
+            href={email.href}
+            className="font-bold text-white underline decoration-white/30 underline-offset-4 hover:decoration-white"
+          >
+            {email.address}
           </a>
         </p>
       </PageHero>

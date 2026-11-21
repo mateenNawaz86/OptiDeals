@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { config } from "./config";
-import { site, whatsapp, whatsappHref } from "./site";
+import { email, site, whatsapp, whatsappHref } from "./site";
 
 /** Absolute URL for a site path, without a trailing slash on the home page. */
 export const absoluteUrl = (path = "/") =>
@@ -70,6 +70,7 @@ export const organizationJsonLd = (): JsonLdNode => ({
     "@type": "ContactPoint",
     contactType: "customer support",
     telephone: `+${whatsapp.number}`,
+    email: email.address,
     url: whatsappHref(),
     availableLanguage: "English",
   },

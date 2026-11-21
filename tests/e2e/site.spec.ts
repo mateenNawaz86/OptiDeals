@@ -35,10 +35,13 @@ test("buy button opens WhatsApp with the plan and price filled in", async ({
   await expect(buy).toHaveAttribute("href", /%C2%A360/);
 });
 
-test("contact page is WhatsApp only, with no form", async ({ page }) => {
+test("contact page offers WhatsApp and email, with no form", async ({ page }) => {
   await page.goto("/contact");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("WhatsApp");
   await expect(page.locator("form")).toHaveCount(0);
+  await expect(
+    page.getByRole("main").getByRole("link", { name: "mateenmirani125@gmail.com" }),
+  ).toHaveAttribute("href", "mailto:mateenmirani125@gmail.com");
   await expect(
     page.getByRole("main").getByRole("link", { name: "Chat on WhatsApp" }),
   ).toHaveAttribute("href", new RegExp(`^${WHATSAPP}`));

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { WhatsAppIcon } from "@/components/ui/icons";
+import { MailIcon, WhatsAppIcon } from "@/components/ui/icons";
 import { Logo } from "@/components/ui/logo";
-import { footerNav, messages, site, whatsapp, whatsappHref } from "@/lib/site";
+import { email, footerNav, messages, site, whatsapp, whatsappHref } from "@/lib/site";
 
 const linkClassName =
   "hover:text-brand-300 inline-block rounded py-2.5 text-white/70 transition-colors duration-300";
@@ -33,6 +33,13 @@ export function SiteFooter() {
             <WhatsAppIcon className="size-5" />
             {whatsapp.display}
           </ButtonLink>
+          <a
+            href={email.href}
+            className="hover:text-brand-300 mt-4 flex min-h-11 w-fit items-center gap-2.5 rounded break-all text-white/70 transition-colors duration-300"
+          >
+            <MailIcon className="size-5 shrink-0" />
+            {email.address}
+          </a>
         </div>
 
         {footerNav.map((group) => (
