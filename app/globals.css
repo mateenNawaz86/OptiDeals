@@ -1,93 +1,155 @@
 @import "tailwindcss";
 
 /*
- * Roca is a commercial typeface (not on Google Fonts). Put the licensed web font at
- * public/fonts/roca/roca-bold.woff2 (and .woff); until then the hero heading falls back to Inter.
- */
-@font-face {
-  font-family: "Roca";
-  src:
-    local("Roca Two Bold"),
-    local("Roca Bold"),
-    url("/fonts/roca/roca-bold.woff2") format("woff2"),
-    url("/fonts/roca/roca-bold.woff") format("woff");
-  font-weight: 700 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/*
- * Design tokens. Brand hues come from the IPTV Figma design; the 600/700 steps are deeper
- * versions chosen so white text on them meets WCAG contrast (the design's #17dbc7 is 1.75:1).
+ * Design tokens. The whole site is one dark, cinematic theme: deep navy "night" surfaces,
+ * glass cards, and light from the three logo colours (teal, violet, pink).
+ * Contrast notes are against night-950 (WCAG 2.2 AA).
  */
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-roca: "Roca", var(--font-inter), ui-sans-serif, sans-serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    var(--font-sora), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
 
-  --color-brand-50: #e9fbf8;
-  --color-brand-100: #c9f5ef;
-  --color-brand-400: #17dbc7;
-  --color-brand-600: #0d9e90; /* 3.3:1 on white — large text and UI parts */
-  --color-brand-700: #087a70; /* 5.2:1 on white — any text */
-  --color-accent-100: #ece8ff;
+  --color-night-950: #05070f;
+  --color-night-900: #090d1c;
+  --color-night-800: #10162b;
+  --color-night-700: #1a2240;
+
+  --color-brand-300: #5eead4; /* 13:1 */
+  --color-brand-400: #17dbc7; /* 11:1; never under white text */
+  --color-brand-600: #0d9e90;
+
+  --color-accent-300: #b6aaff; /* 9:1 */
+  --color-accent-400: #9d8bff;
   --color-accent-500: #8671ff;
-  --color-accent-600: #6a4ff0; /* 5.3:1 on white */
-  --color-indigo: #504499;
 
-  --color-ink: #1b1a1a;
-  --color-body: #4d4d4d;
-  --color-muted: #5c5c5c;
-  --color-placeholder: #8a8888;
-  --color-surface: #f6f6f6;
-  --color-line: #e6e6e6;
+  --color-pink: #ff6ab0;
+  --color-gold: #ffc24b;
+  --color-whatsapp: #25d366; /* 10:1; dark text on top */
 
-  --radius-field: 9px;
+  --shadow-glow: 0 20px 50px -20px rgb(23 219 199 / 0.55);
+  --shadow-whatsapp: 0 20px 50px -20px rgb(37 211 102 / 0.6);
+  --shadow-panel: 0 40px 100px -40px rgb(0 0 0 / 0.9);
 
-  /* Figma drop shadows: y 4, blur ~15–17, black 10%. */
-  --shadow-card: 0 4px 15px rgb(0 0 0 / 0.08);
-  --shadow-card-hover: 0 14px 32px -8px rgb(23 30 60 / 0.18);
-  --shadow-panel: 0 4px 17px rgb(0 0 0 / 0.1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-fade-up: fade-up 0.9s var(--ease-out-expo) both;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-drift: drift 18s ease-in-out infinite alternate;
+  --animate-menu-in: menu-in 0.25s var(--ease-out-expo) both;
+  --animate-ping-slow: ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes drift {
+    from {
+      transform: translate3d(-4%, -3%, 0) scale(1);
+    }
+    to {
+      transform: translate3d(5%, 4%, 0) scale(1.12);
+    }
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
-/* Header, feature band, contact band, footer. */
-@utility bg-brand {
-  background-image: linear-gradient(90deg, #087a70 0%, #0d9e90 30%, #504499 100%);
-}
-
-/* Buttons, pills, price headers: white text stays legible across the whole gradient. */
-@utility bg-brand-vivid {
-  background-image: linear-gradient(90deg, #0b8b80 0%, #6a4ff0 100%);
-}
-
-@utility text-gradient-brand {
-  background-image: linear-gradient(90deg, #0d9e90 25%, #504499 100%);
+/* Three-colour brand gradient as text. */
+@utility text-gradient {
+  background-image: linear-gradient(100deg, #5eead4 0%, #9d8bff 55%, #ff6ab0 100%);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
 }
 
+@utility bg-gradient-brand {
+  background-image: linear-gradient(120deg, #17dbc7 0%, #8671ff 60%, #ff6ab0 100%);
+}
+
+/* Static version of the aurora light, for small screens (see components/ui/aurora.tsx). */
+@utility bg-aurora {
+  background-image:
+    radial-gradient(34rem 26rem at 105% -6%, rgb(134 113 255 / 0.36), transparent 70%),
+    radial-gradient(30rem 24rem at -12% 4%, rgb(23 219 199 / 0.28), transparent 70%),
+    radial-gradient(24rem 20rem at 50% 46%, rgb(255 106 176 / 0.1), transparent 70%);
+}
+
+/* Faint dot grid that fades out towards the edges; decoration behind heroes. */
+@utility bg-dots {
+  background-image: radial-gradient(rgb(255 255 255 / 0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 75%);
+}
+
 @layer base {
+  :root {
+    /* Sticky header height; anchor targets stop exactly below it. */
+    --header-h: 4rem;
+  }
+
+  @media (min-width: 64rem) {
+    :root {
+      --header-h: 4.5rem;
+    }
+  }
+
   html {
     scroll-behavior: smooth;
-    /* Anchor targets land below the sticky header. */
-    scroll-padding-top: 5.5rem;
+    scroll-padding-top: var(--header-h);
     -webkit-text-size-adjust: 100%;
+    color-scheme: dark;
   }
 
   body {
-    background: #ffffff;
-    color: var(--color-ink);
+    background: var(--color-night-950);
+    color: #ffffff;
     font-family: var(--font-sans);
+    letter-spacing: 0.012em;
     text-rendering: optimizeLegibility;
   }
 
   ::selection {
-    background: var(--color-brand-100);
+    background: rgb(23 219 199 / 0.35);
+    color: #ffffff;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent-600);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-brand-300);
+    outline-offset: 3px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -98,12 +160,114 @@
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
+      animation-delay: 0s !important;
+      animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      transition-delay: 0s !important;
     }
   }
 }
 
-/* Read-only forms keep their look, but no control reacts to the pointer. */
-fieldset:disabled :is(button, input, textarea, select, label) {
-  pointer-events: none;
+@layer components {
+  /* Glass card: translucent fill, hairline edge, soft top highlight. */
+  .glass {
+    position: relative;
+    border-radius: 1.75rem;
+    background: linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.07),
+      rgb(255 255 255 / 0.02)
+    );
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.08),
+      inset 0 1px 0 0 rgb(255 255 255 / 0.1);
+    transition:
+      transform 0.5s var(--ease-out-expo),
+      box-shadow 0.5s var(--ease-out-expo);
+  }
+
+  /* Lift and teal edge glow on hover. */
+  .glass-hover:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      inset 0 0 0 1px rgb(94 234 212 / 0.35),
+      inset 0 1px 0 0 rgb(255 255 255 / 0.14),
+      0 30px 60px -30px rgb(23 219 199 / 0.45);
+  }
+
+  /* Light that follows the pointer; --mx/--my are set by components/effects/spotlight.tsx. */
+  [data-spot]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      24rem circle at var(--mx, 50%) var(--my, 0%),
+      rgb(134 113 255 / 0.2),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  [data-spot]:hover::after {
+    opacity: 1;
+  }
+
+  /* Gradient hairline border for featured cards. */
+  .ring-gradient::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #5eead4, #8671ff 55%, #ff6ab0);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box exclude,
+      linear-gradient(#fff 0 0);
+    pointer-events: none;
+  }
+
+  /* Scroll reveal; components/ui/reveal.tsx flips data-visible when the element enters view. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.9s var(--ease-out-expo),
+      transform 0.9s var(--ease-out-expo);
+    will-change: opacity, transform;
+  }
+
+  .reveal[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Reading-progress line under the header, driven by page scroll where supported. */
+  .scroll-progress {
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      animation: scroll-progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+
+  @keyframes scroll-progress {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
 }

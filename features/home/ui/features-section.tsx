@@ -1,74 +1,40 @@
-import Image from "next/image";
 import { Container } from "@/components/ui/container";
+import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { cn } from "@/lib/cn";
-import { features, type Feature } from "../content";
-
-function FeatureCard({ feature }: { feature: Feature }) {
-  const { title, body, icon: Icon, highlighted } = feature;
-
-  return (
-    <li
-      className={cn(
-        "flex flex-col rounded-2xl p-7 shadow-sm transition duration-300 motion-safe:hover:-translate-y-1 hover:shadow-card-hover lg:p-8",
-        highlighted ? "bg-brand-700 text-white" : "bg-white",
-      )}
-    >
-      <span
-        className={cn(
-          "flex size-16 items-center justify-center rounded-2xl",
-          highlighted ? "bg-white/15 text-white" : "bg-accent-100 text-accent-600",
-        )}
-      >
-        {"src" in Icon ? (
-          <Image
-            src={Icon.src}
-            alt=""
-            width={Icon.width}
-            height={Icon.height}
-            className="size-9 object-contain"
-          />
-        ) : (
-          <Icon className="size-9" />
-        )}
-      </span>
-      <h3
-        className={cn(
-          "mt-6 text-xl font-bold tracking-tight uppercase lg:text-[1.375rem]",
-          highlighted ? "text-white" : "text-ink",
-        )}
-      >
-        {title}
-      </h3>
-      <p
-        className={cn(
-          "mt-3 leading-relaxed",
-          highlighted ? "text-white/90" : "text-body",
-        )}
-      >
-        {body}
-      </p>
-    </li>
-  );
-}
+import { features } from "../content";
 
 export function FeaturesSection() {
   return (
-    <section
-      id="services"
-      aria-labelledby="services-title"
-      className="bg-brand py-16 lg:py-24"
-    >
+    <section id="features" aria-labelledby="features-title" className="py-20 lg:py-32">
       <Container>
         <SectionHeading
-          id="services-title"
+          id="features-title"
+          eyebrow={features.eyebrow}
           title={features.title}
           intro={features.intro}
-          tone="light"
         />
-        <ul className="mx-auto mt-10 grid max-w-[1140px] gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-7">
-          {features.items.map((feature) => (
-            <FeatureCard key={feature.title} feature={feature} />
+        <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3 lg:gap-6">
+          {features.items.map(({ title, body, icon: Icon }, index) => (
+            <Reveal as="li" key={title} delay={(index % 3) * 90}>
+              <article
+                data-spot
+                className="glass glass-hover group h-full overflow-hidden p-7 lg:p-9"
+              >
+                <span
+                  aria-hidden="true"
+                  className="font-display absolute top-5 right-7 text-6xl font-extrabold text-white/[0.04] transition-colors duration-500 group-hover:text-white/[0.08]"
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="bg-gradient-brand ease-out-expo flex size-14 items-center justify-center rounded-2xl text-white shadow-[0_12px_30px_-10px_rgb(134_113_255/0.7)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
+                  <Icon className="size-7" />
+                </span>
+                <h3 className="font-display mt-7 text-xl font-bold tracking-tight text-white">
+                  {title}
+                </h3>
+                <p className="mt-3 leading-relaxed text-white/65">{body}</p>
+              </article>
+            </Reveal>
           ))}
         </ul>
       </Container>

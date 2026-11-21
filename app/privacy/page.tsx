@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/features/legal/ui/legal-page";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+// Placeholder text: kept out of search results until the final copy is published.
+export const metadata: Metadata = pageMetadata({
   title: "Privacy policy",
-  alternates: { canonical: "/privacy" },
-};
+  description: "Privacy policy for the OptiDeals IPTV service.",
+  path: "/privacy",
+  index: false,
+});
 
 export default function Page() {
   return <LegalPage title="Privacy policy" />;

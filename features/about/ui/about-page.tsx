@@ -1,97 +1,123 @@
-import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { PillHeading, SectionHeading } from "@/components/ui/section-heading";
+import { CountUp } from "@/components/ui/count-up";
+import { CtaBand } from "@/components/ui/cta-band";
+import { PageHero } from "@/components/ui/page-hero";
+import { Reveal } from "@/components/ui/reveal";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { about } from "../content";
 
-function StoryCard({
-  lead,
-  paragraphs,
-  labelledBy,
-}: {
-  lead: string;
-  paragraphs: string[];
-  labelledBy: string;
-}) {
+function Prose({ paragraphs }: { paragraphs: string[] }) {
   return (
-    <article
-      aria-labelledby={labelledBy}
-      className="shadow-panel mx-auto mt-8 max-w-[1100px] rounded-[27px] bg-white px-6 py-8 sm:px-10 sm:py-10 lg:mt-10 lg:px-20 lg:py-14"
+    <Reveal
+      delay={100}
+      className="flex flex-col gap-5 text-lg leading-relaxed text-white/70"
     >
-      <p className="text-ink text-xl leading-snug font-bold text-balance sm:text-2xl lg:text-[1.75rem]">
-        {lead}
-      </p>
-      <div className="text-body mt-5 flex flex-col gap-5 text-lg leading-relaxed lg:text-[1.3125rem] lg:leading-[1.7]">
-        {paragraphs.map((paragraph) => (
-          <p key={paragraph.slice(0, 32)}>{paragraph}</p>
-        ))}
-      </div>
-    </article>
+      {paragraphs.map((paragraph) => (
+        <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+      ))}
+    </Reveal>
   );
 }
 
 export function AboutPage() {
   return (
     <>
-      <section className="py-12 lg:py-16">
-        <Container>
-          <PillHeading as="h1" id="about-title" className="lg:min-w-[30rem]">
-            {about.title}
-          </PillHeading>
-          <StoryCard
-            lead={about.story.lead}
-            paragraphs={about.story.paragraphs}
-            labelledBy="about-title"
-          />
+      <PageHero
+        id="about-title"
+        eyebrow={about.eyebrow}
+        title={
+          <>
+            {about.title.lead}{" "}
+            <span className="text-gradient">{about.title.accent}</span>
+          </>
+        }
+        intro={about.intro}
+      />
 
-          <PillHeading id="journey-title" className="mt-14 lg:mt-20 lg:min-w-[36rem]">
-            {about.journey.title}
-          </PillHeading>
-          <StoryCard
-            lead={about.journey.lead}
-            paragraphs={about.journey.paragraphs}
-            labelledBy="journey-title"
-          />
+      <section aria-label="OptiDeals in numbers" className="pb-20 lg:pb-28">
+        <Container>
+          <dl className="grid grid-cols-2 gap-5 lg:grid-cols-4 lg:gap-6">
+            {about.facts.map((fact, index) => (
+              <Reveal
+                key={fact.label}
+                delay={index * 90}
+                className="glass flex h-full flex-col-reverse justify-end gap-2 px-5 py-8 text-center sm:py-10"
+              >
+                <dt className="text-sm text-white/60 sm:text-base">{fact.label}</dt>
+                <dd className="font-display text-gradient text-[clamp(1.6rem,1rem+2.6vw,3rem)] leading-tight font-extrabold tracking-tight">
+                  {"count" in fact && fact.count ? (
+                    <CountUp {...fact.count} />
+                  ) : (
+                    fact.text
+                  )}
+                </dd>
+              </Reveal>
+            ))}
+          </dl>
         </Container>
       </section>
 
-      <section aria-labelledby="highlights-title" className="bg-brand py-16 lg:py-24">
+      <section
+        aria-labelledby="story-title"
+        className="bg-night-900 border-y border-white/10 py-20 lg:py-32"
+      >
+        <Container className="grid gap-10 lg:grid-cols-2 lg:gap-20">
+          <SectionHeading
+            id="story-title"
+            eyebrow={about.story.eyebrow}
+            title={about.story.title}
+            align="left"
+            className="lg:sticky lg:top-28 lg:self-start"
+          />
+          <Prose paragraphs={about.story.paragraphs} />
+        </Container>
+      </section>
+
+      <section aria-labelledby="journey-title" className="py-20 lg:py-32">
+        <Container className="grid gap-10 lg:grid-cols-2 lg:gap-20">
+          <SectionHeading
+            id="journey-title"
+            eyebrow={about.journey.eyebrow}
+            title={about.journey.title}
+            align="left"
+            className="lg:sticky lg:top-28 lg:self-start"
+          />
+          <Prose paragraphs={about.journey.paragraphs} />
+        </Container>
+      </section>
+
+      <section
+        aria-labelledby="highlights-title"
+        className="bg-night-900 border-y border-white/10 py-20 lg:py-32"
+      >
         <Container>
           <SectionHeading
             id="highlights-title"
+            eyebrow={about.highlights.eyebrow}
             title={about.highlights.title}
-            tone="light"
           />
-          <ul className="mt-12 grid gap-12 text-center text-white sm:grid-cols-3 lg:mt-16">
-            {about.highlights.items.map(({ title, body, icon: Icon }) => (
-              <li key={title} className="flex flex-col items-center">
-                <Icon className="h-20 w-20 lg:h-[6.5rem] lg:w-[6.5rem]" />
-                <h3 className="mt-6 text-3xl font-light lg:text-[2.75rem]">{title}</h3>
-                <p className="mt-2 text-lg text-white/90 lg:text-xl">{body}</p>
-              </li>
+          <ul className="mt-14 grid gap-5 md:grid-cols-3 lg:mt-20 lg:gap-6">
+            {about.highlights.items.map(({ title, body, icon: Icon }, index) => (
+              <Reveal as="li" key={title} delay={index * 100}>
+                <article
+                  data-spot
+                  className="glass glass-hover group h-full p-7 text-center lg:p-9"
+                >
+                  <span className="bg-gradient-brand ease-out-expo mx-auto flex size-16 items-center justify-center rounded-2xl text-white shadow-[0_12px_30px_-10px_rgb(134_113_255/0.7)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
+                    <Icon className="size-8" />
+                  </span>
+                  <h3 className="font-display mt-7 text-xl font-bold tracking-tight text-white">
+                    {title}
+                  </h3>
+                  <p className="mt-3 leading-relaxed text-white/65">{body}</p>
+                </article>
+              </Reveal>
             ))}
           </ul>
         </Container>
       </section>
 
-      <section aria-labelledby="about-cta-title" className="py-16 lg:py-20">
-        <Container className="text-center">
-          <h2
-            id="about-cta-title"
-            className="text-ink text-[clamp(1.75rem,1.2rem+1.6vw,2.5rem)] font-extrabold tracking-tight"
-          >
-            {about.cta.title}
-          </h2>
-          <p className="text-muted mx-auto mt-3 max-w-xl text-lg">{about.cta.body}</p>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row sm:gap-4">
-            <ButtonLink href={about.cta.primary.href} size="lg">
-              {about.cta.primary.label}
-            </ButtonLink>
-            <ButtonLink href={about.cta.secondary.href} size="lg" variant="outline">
-              {about.cta.secondary.label}
-            </ButtonLink>
-          </div>
-        </Container>
-      </section>
+      <CtaBand id="about-cta-title" {...about.cta} />
     </>
   );
 }

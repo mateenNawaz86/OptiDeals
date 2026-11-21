@@ -20,7 +20,10 @@ const nextConfig: NextConfig = {
     }) as NonNullable<NextConfig["turbopack"]>["rules"],
   },
   images: {
-    remotePatterns: [],
+    // YouTube video posters.
+    remotePatterns: [
+      { protocol: "https", hostname: "i.ytimg.com", pathname: "/vi/**" },
+    ],
   },
   // Next's NextConfig.headers() type requires a Promise-returning function
   // even though this implementation is synchronous.

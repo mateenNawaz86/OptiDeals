@@ -1,40 +1,19 @@
 # Features
 
-One folder per domain module. Everything a module needs lives together:
+One folder per page. Everything a page needs lives together:
 
 ```
 features/<name>/
-  api/
-    types.ts    # interface <Name>Api — the contract both implementations satisfy
-    live.ts     # real calls via `api` from lib/api.ts (responses parsed with zod)
-    mock.ts     # in-memory implementation using lib/mock-api.ts helpers
-    index.ts    # export const <name>Api = config.useMockApi ? mock : live
-  data/         # fixtures used by mock.ts
-  hooks/        # React Query hooks (use<Name>List, useUpdate<Name>, …)
-  lib/          # pure helpers (formatting, mapping, form defaults) with *.test.ts beside them
-  types/        # zod schemas + inferred types (the source of truth for shapes)
-  ui/
-    atoms/ molecules/ organisms/ templates/
+  content.ts    # all copy, links and icons for the page, as plain data
+  data/         # structured data with logic (e.g. pricing plans), tests beside it
+  ui/           # the page's sections, one component per file
 ```
 
-- Route files in `app/[locale]/(public)/<name>/page.tsx` stay thin and render a template from
-  `features/<name>/ui/templates`.
-- Code shared by several features goes in `features/shared/`; generic design-system primitives
-  go in `components/ui/`.
-- Strings go in `dictionaries/{de,en}.json` under `modules.<name>.*` and are read with
-  `useTranslations()`.
+- Route files in `app/<name>/page.tsx` stay thin: metadata, JSON-LD and one component from
+  `features/<name>/ui`.
+- Copy changes are made in `content.ts`, not in the components.
+- Generic building blocks (buttons, headings, icons, reveal) go in `components/ui/`.
+- Contact links are built with `whatsappHref()` and `messages` from `lib/site.ts`.
 
-Slices today: `home` (static data + region context), `about` (template only) and `contact`
-(full slice: schema, mock/live API, mutation hook, form).
-
-## `api/index.ts` template
-
-```ts
-import { config } from "@/lib/config";
-import { liveThingsApi } from "@/features/things/api/live";
-import { mockThingsApi } from "@/features/things/api/mock";
-
-export type { ThingsApi } from "@/features/things/api/types";
-
-export const thingsApi = config.useMockApi ? mockThingsApi : liveThingsApi;
-```
+Slices today: `home` (sections plus pricing data and region selector), `about`, `contact`
+(WhatsApp page) and `legal` (placeholder terms and privacy pages).

@@ -1,19 +1,15 @@
-# Opti Deals Frontend
+# OptiDeals Frontend
 
-Next.js (App Router) frontend: TypeScript, Tailwind CSS, Zod, React Hook Form,
-TanStack Query. Same stack and structure as `buero-365-frontend-v3`.
+Marketing site for the OptiDeals IPTV service. Next.js (App Router), TypeScript and
+Tailwind CSS. Every page is static; there is no backend. Orders, trial requests and support
+all go through one WhatsApp number.
 
 ## Stack
 
 - Next.js 16 (App Router, Turbopack) + React 19
 - TypeScript 6 (`strict`)
-- Tailwind CSS v4: design tokens in `app/globals.css`
-- Zod: schemas in `features/*/types`
-- React Hook Form + `@hookform/resolvers`
-- TanStack Query for server state
-- Axios-based typed API client (`lib/api.ts`) with a mock/live switch per feature
-- i18n: `en` (default) and `de`, routed under `app/[locale]` (the `de` dictionary still holds the English copy)
-- Vitest + React Testing Library (unit/component), Playwright (E2E)
+- Tailwind CSS v4: design tokens, glass cards and animations in `app/globals.css`
+- Vitest (unit) and Playwright (E2E)
 - ESLint (type-checked) + Prettier, Husky + lint-staged pre-commit hook
 
 ## Getting started
@@ -24,87 +20,94 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open http://localhost:3000. It redirects to `/en` (English is the default locale).
+Open http://localhost:3000.
+
+If the dev server panics or reloads in a loop after routes were added or removed, stop it,
+delete the `.next` folder and start it again.
 
 ## Pages
 
-Built from the "IPTV" Figma design (desktop frames, 1440px wide):
+| Route      | Slice              | Notes                                              |
+| ---------- | ------------------ | -------------------------------------------------- |
+| `/`        | `features/home`    | Hero, features, pricing, comparison, apps, FAQ     |
+| `/about`   | `features/about`   | Story, journey, highlights                         |
+| `/contact` | `features/contact` | WhatsApp only: one chat button and topic shortcuts |
+| `/terms`   | `features/legal`   | Placeholder, `noindex`, not in the sitemap         |
+| `/privacy` | `features/legal`   | Placeholder, `noindex`, not in the sitemap         |
 
-| Route               | Design frame          | Slice              |
-| ------------------- | --------------------- | ------------------ |
-| `/[locale]`         | Desktop 1, 3, 4, 5, 6 | `features/home`    |
-| `/[locale]/about`   | Desktop 7             | `features/about`   |
-| `/[locale]/contact` | Contact Us            | `features/contact` |
+## WhatsApp
 
-Desktop 3–6 are the home page with another region tab selected; the tabs switch the pricing
-currency (`features/home/data/regions.ts`). Content is capped at 1440px; gradient bands run
-full width. Smaller screens stack the same sections.
+The number, the link builder and the pre-written opening messages live in `lib/site.ts`
+(`whatsapp`, `whatsappHref`, `messages`). Every buy, trial, reseller and contact link is built
+from them, so changing the number there changes it everywhere. An E2E test fails if any
+external link on the site points anywhere else.
 
-## Fonts
+## Design system
 
-- **Inter** (Google, via `next/font`) for everything.
-- **Roca** for the main hero heading (`font-roca`). Roca is a commercial font: add the licensed
-  web font as `public/fonts/roca/roca-bold.woff2` (and `.woff`). Until then the heading falls
-  back to Inter (and the browser logs a 404 for the missing file).
+- **Theme:** dark only. Colours, shadows, easing and keyframes are `@theme` tokens in
+  `app/globals.css`.
+- **Fonts:** Sora (headings, `font-display`) and Manrope (body), loaded with `next/font`.
+- **Cards:** `.glass` (surface), `.glass-hover` (lift and glow), `.ring-gradient` (gradient
+  border) and `data-spot` (light follows the pointer, fed by `components/effects/spotlight.tsx`).
+- **Motion:** `components/ui/reveal.tsx` fades content in on scroll and
+  `components/ui/count-up.tsx` animates numbers. Both respect `prefers-reduced-motion`, and
+  content stays visible without JavaScript.
+- **Anchors:** `--header-h` is the sticky header height and the page's `scroll-padding-top`,
+  so `/#pricing` and friends stop exactly below the header.
+- **Logo:** `components/ui/logo.tsx`. `app/icon.svg` is the same drawing; `favicon.ico`,
+  `apple-icon.png` and `opengraph-image.png` were rendered from it and need regenerating if
+  the logo changes.
+
+## SEO
+
+- `lib/seo.ts`: `pageMetadata()` (title, description, canonical, Open Graph, Twitter) and the
+  JSON-LD builders (Organization, WebSite, FAQPage, BreadcrumbList).
+- `app/sitemap.ts`, `app/robots.ts`, `app/manifest.ts`.
+- Page copy lives in each feature's `content.ts`.
 
 ## Environment variables
 
-| Variable                   | Description                               | Default                 |
-| -------------------------- | ----------------------------------------- | ----------------------- |
-| `NEXT_PUBLIC_API_URL`      | Base URL of the backend API               | `http://localhost:4000` |
-| `NEXT_PUBLIC_USE_MOCK_API` | `false` switches features to the live API | mock on                 |
+| Variable               | Description                                             | Default                 |
+| ---------------------- | ------------------------------------------------------- | ----------------------- |
+| `NEXT_PUBLIC_SITE_URL` | Public origin, for canonical URLs, sitemap and JSON-LD. | `http://localhost:3000` |
+
+Set `NEXT_PUBLIC_SITE_URL` to the real domain in production.
 
 ## Scripts
 
-| Script                 | Description                 |
-| ---------------------- | --------------------------- |
-| `npm run dev`          | Start the dev server        |
-| `npm run build`        | Production build            |
-| `npm run start`        | Start the production server |
-| `npm run lint`         | ESLint                      |
-| `npm run lint:fix`     | ESLint with autofix         |
-| `npm run format`       | Prettier write              |
-| `npm run format:check` | Prettier check              |
-| `npm run typecheck`    | `tsc --noEmit`              |
-| `npm run test`         | Vitest unit/component tests |
-| `npm run test:watch`   | Vitest watch mode           |
-| `npm run test:e2e`     | Playwright E2E tests        |
+| Script                 | Description                                           |
+| ---------------------- | ----------------------------------------------------- |
+| `npm run dev`          | Start the dev server                                  |
+| `npm run build`        | Production build                                      |
+| `npm run start`        | Start the production server                           |
+| `npm run lint`         | ESLint                                                |
+| `npm run lint:fix`     | ESLint with autofix                                   |
+| `npm run format`       | Prettier write                                        |
+| `npm run format:check` | Prettier check                                        |
+| `npm run typecheck`    | Route types + `tsc --noEmit`                          |
+| `npm run test`         | Vitest unit tests                                     |
+| `npm run test:watch`   | Vitest watch mode                                     |
+| `npm run test:e2e`     | Playwright E2E tests (`npx playwright install` first) |
 
 ## Project layout
 
 ```
-app/
-  [locale]/layout.tsx       Root layout (<html lang>), Inter font, providers
-  [locale]/(public)/        Site routes: home, about, contact (+ shared header layout)
-  providers.tsx             React Query, locale, translations
-  globals.css               Design tokens, gradients, Roca @font-face
-components/ui/atoms/        Gradient pill/button, form field, checkbox
-components/shell/           Site header and footer
-components/assets/svgs/     Icons extracted from the design, as React components
-contexts/                   Global (locale) and translation contexts
-dictionaries/               en.json / de.json (all page copy)
-features/<name>/            Feature slices (see features/README.md)
-hooks/                      Shared hooks (useLocaleRouter, useDebouncedValue, useIsMounted)
-lib/                        API client, config, query helpers, form errors, cn, i18n, nav links
-public/images/              Images extracted from the design exports
-proxy.ts                    Redirects unprefixed URLs to /<locale>/…
-tests/                      Vitest setup + Playwright E2E specs
-docs/                       Backend specs, one per module
+app/                    Routes, layout, global CSS, icons, sitemap, robots, manifest
+components/layout/      Site header and footer
+components/ui/          Buttons, headings, icons, logo, reveal, count-up, page hero, CTA band
+components/effects/     Pointer spotlight for cards
+components/seo/         JSON-LD script tag
+features/<name>/        Page slices (see features/README.md)
+lib/                    Site identity and WhatsApp links, SEO helpers, config, cn
+public/images/          App logos and the Sky Glass banner
+tests/                  Vitest setup and Playwright E2E specs
 ```
 
 ## Conventions
 
-- Locales are defined once in `lib/dictionary/locales.ts`; everything else imports from there.
-- Forms use `react-hook-form` + `zodResolver`; backend field errors are mapped to
-  RHF via `lib/form-errors.ts`.
-- API calls go through `lib/api.ts`, which validates responses with Zod and
-  normalizes errors into `ApiError`.
-- Class names: `cn()` (`lib/cn.ts`) or `combineClasses()` (`utils/utils.ts`, supports `!!class`
-  to drop a default).
-- Light theme only, as in the design.
-- Server components translate with `getTranslations(locale)` (`lib/dictionary/server.ts`);
-  client components use `useTranslations()`.
-- Unit tests sit next to the code as `*.test.ts(x)` and are committed.
+- Class names go through `cn()` (`lib/cn.ts`).
+- Icons come from the one stroke set in `components/ui/icons.tsx`.
+- Unit tests sit next to the code as `*.test.ts` and are committed.
 
 ## CI
 

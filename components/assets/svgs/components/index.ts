@@ -1,9 +1,0 @@
-export { MoviesIcon } from "./movies-icon";
-export { EntertainmentIcon } from "./entertainment-icon";
-export { ActivationIcon } from "./activation-icon";
-export { SupportIcon } from "./support-icon";
-export { RatesIcon } from "./rates-icon";
-export { ArrowRightIcon } from "./arrow-icon";
-export { GlobeIcon } from "./globe-icon";
-export { FourKIcon } from "./four-k-icon";
-export { ShieldCheckIcon } from "./shield-icon";

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-/** Centres content at the design's 1440px frame with responsive side padding. */
+/** Centres content at 1280px with responsive side padding. */
 export function Container({
   children,
   className,
@@ -10,12 +10,7 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div
-      className={cn(
-        "mx-auto w-full max-w-[1440px] px-5 sm:px-8 xl:px-[72px]",
-        className,
-      )}
-    >
+    <div className={cn("mx-auto w-full max-w-7xl px-5 sm:px-8", className)}>
       {children}
     </div>
   );

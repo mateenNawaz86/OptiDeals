@@ -1,25 +1,63 @@
+import {
+  HeadphonesIcon,
+  LayoutIcon,
+  PlayIcon,
+  TagIcon,
+  TvIcon,
+  type Icon,
+} from "@/components/ui/icons";
+import { messages, whatsappHref } from "@/lib/site";
+
 export const contact = {
-  metaTitle: "Contact us",
+  metaTitle: "Contact Us on WhatsApp: 24/7 IPTV Support",
   metaDescription:
-    "Contact the OptiDeals team about subscriptions, trials, reseller panels or setup help.",
-  title: "Contact us",
-  tagline: "Contact our team and get some of the best customer support around.",
-  topics: ["New subscriptions and trials", "Reseller panels", "Setup and app help"],
-  formTitle: "Contact info",
-  fields: {
-    firstName: { label: "First name", placeholder: "Enter your first name" },
-    lastName: { label: "Last name", placeholder: "Enter your last name" },
-    email: { label: "Email", placeholder: "you@example.com" },
-    phone: { label: "Phone number", placeholder: "Enter your number" },
-    dateOfBirth: { label: "Date of birth", placeholder: "Enter your date of birth" },
-    service: { label: "Requested service", placeholder: "Choose a service" },
-    message: { label: "How can we help you?", placeholder: "Describe what you need" },
-    agree: { label: "I agree to the", link: "terms and privacy policy" },
-  },
-  planMessage: (period: string) => `I'd like to buy the ${period} plan.`,
-  cancel: "Cancel",
-  submit: "Submit",
-  sending: "Sending…",
-  success: "Thank you! Your message has been sent. Our team will contact you soon.",
-  failure: "Your message could not be sent. Please try again.",
+    "Message the OptiDeals team on WhatsApp 24/7 for IPTV subscriptions, trials, reseller panels or setup help. A real person replies.",
+  eyebrow: "Contact us",
+  title: { lead: "Talk to us on", accent: "WhatsApp" },
+  intro:
+    "No forms and no waiting on email. Message our team for subscriptions, trials or setup help and a real person replies, 24/7.",
+  cta: { label: "Chat on WhatsApp", href: whatsappHref(messages.general) },
+  numberLabel: "WhatsApp number",
+  topicsEyebrow: "Pick a topic",
+  topicsTitle: "What can we help you with?",
+  topicsIntro:
+    "Choose a topic and WhatsApp opens with your first message already written. Just press send.",
+  topicCta: "Open chat",
+  topics: [
+    {
+      title: "Buy a subscription",
+      body: "Order a new plan or renew your current one.",
+      icon: TagIcon,
+      href: whatsappHref(messages.subscription),
+    },
+    {
+      title: "Request a trial",
+      body: "Try the service before you buy.",
+      icon: PlayIcon,
+      href: whatsappHref(messages.trial),
+    },
+    {
+      title: "Setup and app help",
+      body: "Get your app or device working.",
+      icon: HeadphonesIcon,
+      href: whatsappHref(messages.setup),
+    },
+    {
+      title: "Reseller panels",
+      body: "Reseller, B1G and Sky Glass panels.",
+      icon: LayoutIcon,
+      href: whatsappHref(messages.reseller),
+    },
+    {
+      title: "Sky Glass IPTV",
+      body: "Ask about options and availability.",
+      icon: TvIcon,
+      href: whatsappHref(messages.skyGlass),
+    },
+  ] satisfies { title: string; body: string; icon: Icon; href: string }[],
+  promises: [
+    { value: "24/7", label: "Support hours" },
+    { value: "1 tap", label: "To start a chat" },
+    { value: "Real people", label: "No bots, no forms" },
+  ],
 };

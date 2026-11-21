@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
-import { PillHeading } from "@/components/ui/section-heading";
+import { Reveal } from "@/components/ui/reveal";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { apps } from "../content";
 
 export function AppsSection() {
@@ -8,36 +9,55 @@ export function AppsSection() {
     <section
       id="apps"
       aria-labelledby="apps-title"
-      className="bg-surface/60 py-16 lg:py-24"
+      className="bg-night-900 border-y border-white/10 py-20 lg:py-32"
     >
       <Container>
-        <PillHeading id="apps-title" className="font-light uppercase lg:min-w-[42rem]">
-          {apps.title}
-        </PillHeading>
-        <p className="text-muted mx-auto mt-5 max-w-xl text-center text-lg">
-          {apps.intro}
-        </p>
-        <ul className="mx-auto mt-12 grid max-w-[1204px] grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:mt-16 lg:gap-x-24 lg:gap-y-16">
-          {apps.items.map((app) => (
-            <li key={app.name}>
-              <figure className="group mx-auto max-w-[284px]">
-                <div className="shadow-card overflow-hidden rounded-3xl bg-white ring-1 ring-black/5 transition duration-300 group-hover:shadow-card-hover motion-safe:group-hover:-translate-y-1">
-                  <Image
-                    src={app.src}
-                    alt=""
-                    width={568}
-                    height={568}
-                    sizes="(min-width: 1024px) 284px, (min-width: 768px) 30vw, 45vw"
-                    className="aspect-square h-auto w-full object-cover"
-                  />
-                </div>
-                <figcaption className="text-ink mt-4 text-center text-base font-semibold">
+        <SectionHeading
+          id="apps-title"
+          eyebrow={apps.eyebrow}
+          title={apps.title}
+          intro={apps.intro}
+        />
+
+        <ul className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:mt-20 lg:grid-cols-6">
+          {apps.items.map((app, index) => (
+            <Reveal as="li" key={app.name} delay={index * 70}>
+              <figure
+                data-spot
+                className="glass glass-hover group flex h-full flex-col items-center px-4 py-7"
+              >
+                <Image
+                  src={app.src}
+                  alt=""
+                  width={568}
+                  height={568}
+                  sizes="96px"
+                  className="ease-out-expo size-20 rounded-[1.35rem] object-cover shadow-[0_18px_40px_-14px_rgb(0_0_0/0.9)] transition-transform duration-500 group-hover:scale-110 sm:size-24"
+                />
+                <figcaption className="mt-5 text-center text-sm font-bold text-white sm:text-[15px]">
                   {app.name}
                 </figcaption>
               </figure>
-            </li>
+            </Reveal>
           ))}
         </ul>
+
+        <Reveal className="mt-14 text-center">
+          <h3 className="text-xs font-bold tracking-[0.16em] text-white/50 uppercase">
+            {apps.devicesTitle}
+          </h3>
+          <ul className="mt-5 flex flex-wrap justify-center gap-3">
+            {apps.devices.map(({ label, icon: Icon }) => (
+              <li
+                key={label}
+                className="inline-flex items-center gap-2.5 rounded-full bg-white/5 px-4 py-2.5 text-sm font-semibold text-white/85 inset-ring inset-ring-white/10 sm:text-[15px]"
+              >
+                <Icon className="text-brand-300 size-5" />
+                {label}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
       </Container>
     </section>
   );

@@ -1,23 +1,28 @@
 import { Container } from "@/components/ui/container";
+import { CountUp } from "@/components/ui/count-up";
+import { Reveal } from "@/components/ui/reveal";
 import { stats } from "../content";
 
 export function StatsSection() {
   return (
-    <section aria-label="OptiDeals in numbers" className="pb-16 lg:pb-24">
+    <section aria-label="OptiDeals in numbers" className="py-20 lg:py-28">
       <Container>
-        <dl className="mx-auto grid max-w-[1194px] gap-6 sm:grid-cols-3 lg:gap-14">
-          {stats.map((stat) => (
-            <div
+        <dl className="grid grid-cols-2 gap-5 lg:grid-cols-4 lg:gap-6">
+          {stats.map((stat, index) => (
+            <Reveal
               key={stat.label}
-              className="shadow-card flex min-h-[200px] flex-col-reverse items-center justify-center gap-3 rounded-[20px] bg-white px-6 py-8 text-center lg:min-h-[252px]"
+              delay={index * 90}
+              className="glass flex h-full flex-col-reverse justify-end gap-2 px-5 py-8 text-center sm:py-10"
             >
-              <dt className="text-muted max-w-[16rem] text-xl leading-snug font-bold uppercase lg:text-[1.6rem]">
-                {stat.label}
-              </dt>
-              <dd className="text-accent-600 text-5xl font-extrabold tracking-tight lg:text-[3.5rem]">
-                {stat.value}
+              <dt className="text-sm text-white/60 sm:text-base">{stat.label}</dt>
+              <dd className="font-display text-gradient text-[clamp(1.6rem,1rem+2.6vw,3rem)] leading-tight font-extrabold tracking-tight">
+                {"count" in stat && stat.count ? (
+                  <CountUp {...stat.count} />
+                ) : (
+                  stat.text
+                )}
               </dd>
-            </div>
+            </Reveal>
           ))}
         </dl>
       </Container>
