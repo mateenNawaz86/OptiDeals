@@ -6,6 +6,7 @@
 # Next.js
 /.next/
 /out/
+.wrangler/
 /build
 next-env.d.ts
 

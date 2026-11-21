@@ -11,6 +11,9 @@ const routes = [
   { path: "/contact", priority: 0.8, changeFrequency: "monthly" },
 ] as const;
 
+// Required for static export: render this file at build time.
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
   return routes.map(({ path, priority, changeFrequency }) => ({

@@ -1,7 +1,8 @@
 # OptiDeals Frontend
 
 Marketing site for the OptiDeals IPTV service. Next.js (App Router), TypeScript and
-Tailwind CSS. Every page is static; there is no backend. Orders, trial requests and support
+Tailwind CSS. Every page is static: the site is exported to plain files (`out/`) and hosted
+on Cloudflare Pages. There is no backend. Orders, trial requests and support
 all go through one WhatsApp number.
 
 ## Stack
@@ -73,13 +74,31 @@ external link on the site points anywhere else.
 
 Set `NEXT_PUBLIC_SITE_URL` to the real domain in production.
 
+## Deployment
+
+The site is a static export (`output: "export"` in `next.config.ts`) on Cloudflare Pages,
+project `optideals`.
+
+```bash
+npx wrangler login     # once per machine
+npm run deploy         # build, then upload out/
+```
+
+- `.env.production` holds the public site URL that canonical links, the sitemap and social
+  cards are built with. Change it there if the address changes. Do not set
+  `NEXT_PUBLIC_SITE_URL` in `.env.local`: it would override the production value in builds.
+- Response headers (security and caching) are in `public/_headers`.
+- Images are not resized on the fly on static hosting, so files in `public/images` are
+  already sized for their largest display size at 2x.
+
 ## Scripts
 
 | Script                 | Description                                           |
 | ---------------------- | ----------------------------------------------------- |
 | `npm run dev`          | Start the dev server                                  |
 | `npm run build`        | Production build                                      |
-| `npm run start`        | Start the production server                           |
+| `npm run start`        | Serve the built `out/` folder locally                 |
+| `npm run deploy`       | Build and publish to Cloudflare Pages                 |
 | `npm run lint`         | ESLint                                                |
 | `npm run lint:fix`     | ESLint with autofix                                   |
 | `npm run format`       | Prettier write                                        |

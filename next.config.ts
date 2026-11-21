@@ -1,14 +1,14 @@
 import type { NextConfig } from "next";
 import { codeInspectorPlugin } from "code-inspector-plugin";
 
-const securityHeaders = [
-  { key: "X-Frame-Options", value: "DENY" },
-  { key: "X-Content-Type-Options", value: "nosniff" },
-  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
-];
-
+/**
+ * The site is exported as static files (`out/`) and hosted on Cloudflare Pages.
+ * Static hosting means two things live outside this file:
+ * - response headers are in `public/_headers` (Cloudflare's format);
+ * - images are not resized at request time, so files in `public/images` are pre-sized.
+ */
 const nextConfig: NextConfig = {
+  output: "export",
   reactStrictMode: true,
   turbopack: {
     root: __dirname,
@@ -20,21 +20,7 @@ const nextConfig: NextConfig = {
     }) as NonNullable<NextConfig["turbopack"]>["rules"],
   },
   images: {
-    // YouTube video posters.
-    remotePatterns: [
-      { protocol: "https", hostname: "i.ytimg.com", pathname: "/vi/**" },
-    ],
-  },
-  // Next's NextConfig.headers() type requires a Promise-returning function
-  // even though this implementation is synchronous.
-  // eslint-disable-next-line @typescript-eslint/require-await
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: securityHeaders,
-      },
-    ];
+    unoptimized: true,
   },
 };
 

@@ -29,8 +29,8 @@ export function AppsSection() {
                 <Image
                   src={app.src}
                   alt=""
-                  width={568}
-                  height={568}
+                  width={192}
+                  height={192}
                   sizes="96px"
                   className="ease-out-expo size-20 rounded-[1.35rem] object-cover shadow-[0_18px_40px_-14px_rgb(0_0_0/0.9)] transition-transform duration-500 group-hover:scale-110 sm:size-24"
                 />

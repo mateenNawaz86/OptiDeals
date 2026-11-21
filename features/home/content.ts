@@ -235,12 +235,12 @@ export const apps = {
   intro:
     "Use your subscription with popular IPTV player apps on smart TVs, phones, tablets and computers.",
   items: [
-    { name: "IPTV Smarters Pro", src: "/images/apps/iptv-smarters.png" },
-    { name: "IBO Player Pro", src: "/images/apps/ibo-player-pro.png" },
-    { name: "BOB TV", src: "/images/apps/bob-tv.png" },
-    { name: "B1G", src: "/images/apps/b1g.png" },
-    { name: "SET IPTV", src: "/images/apps/set-iptv.png" },
-    { name: "TiviMate", src: "/images/apps/tivimate.png" },
+    { name: "IPTV Smarters Pro", src: "/images/apps/iptv-smarters.webp" },
+    { name: "IBO Player Pro", src: "/images/apps/ibo-player-pro.webp" },
+    { name: "BOB TV", src: "/images/apps/bob-tv.webp" },
+    { name: "B1G", src: "/images/apps/b1g.webp" },
+    { name: "SET IPTV", src: "/images/apps/set-iptv.webp" },
+    { name: "TiviMate", src: "/images/apps/tivimate.webp" },
   ],
   devicesTitle: "Supported devices",
   devices: [
@@ -262,9 +262,9 @@ export const shop = {
     href: "https://www.youtube.com/watch?v=II7-VurQSGw",
   },
   image: {
-    src: "/images/shop-banner.jpg",
-    width: 2878,
-    height: 1518,
+    src: "/images/shop-banner.webp",
+    width: 1400,
+    height: 738,
     alt: "Sky Glass Air TV on a living room sideboard",
   },
 };
