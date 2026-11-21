@@ -1,10 +1,9 @@
 name: CI
 
+# Pull requests only: pushes to master are checked by deploy.yml before publishing.
 on:
-  push:
-    branches: [main]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
   verify:

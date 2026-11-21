@@ -79,6 +79,13 @@ Set `NEXT_PUBLIC_SITE_URL` to the real domain in production.
 The site is a static export (`output: "export"` in `next.config.ts`) on Cloudflare Pages,
 project `optideals`.
 
+**Automatic:** every push to `master` runs `.github/workflows/deploy.yml`, which lints,
+typechecks, tests, builds and publishes. It needs two repository secrets on GitHub:
+`CLOUDFLARE_API_TOKEN` (a token with the "Cloudflare Pages: Edit" permission) and
+`CLOUDFLARE_ACCOUNT_ID`. If a check fails, nothing is published.
+
+**Manual**, from a logged-in machine:
+
 ```bash
 npx wrangler login     # once per machine
 npm run deploy         # build, then upload out/
@@ -130,5 +137,5 @@ tests/                  Vitest setup and Playwright E2E specs
 
 ## CI
 
-`.github/workflows/ci.yml` runs lint, format check, typecheck, unit tests and build on
-pushes and PRs to `main`.
+`.github/workflows/ci.yml` runs lint, format check, typecheck, unit tests and build on pull
+requests to `master`. Pushes to `master` are checked and published by `deploy.yml`.
